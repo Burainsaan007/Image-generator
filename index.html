@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Image Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0f7fa;
+            color: #00796b;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #00796b;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #b2dfdb;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00796b;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #004d40;
+        }
+        .image-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            border: 1px solid #b2dfdb;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #f9fbe7;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Text to Image Generator</h1>
+    <div class="input-group">
+        <input type="text" id="text-input" placeholder="Enter your text here">
+    </div>
+    <button onclick="generateImage()">Generate Image</button>
+    <div class="image-container" id="image-container">
+        <!-- Generated image will appear here -->
+    </div>
+</div>
+
+<script>
+    function generateImage() {
+        const text = document.getElementById('text-input').value;
+        if (!text) {
+            alert('Please enter some text.');
+            return;
+        }
+
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const width = 400;
+        const height = 300;
+        canvas.width = width;
+        canvas.height = height;
+
+        // Background color
+        context.fillStyle = '#ffeb3b';
+        context.fillRect(0, 0, width, height);
+
+        // Text settings
+        context.font = '30px Arial';
+        context.fillStyle = '#00796b';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+
+        // Draw text with shadow effect
+        context.shadowBlur = 10;
+        context.shadowColor = 'rgba(0, 121, 107, 0.5)';
+        context.fillText(text, width / 2, height / 2);
+
+        // Draw a circle
+        context.beginPath();
+        context.arc(width / 2, height / 2 + 50, 40, 0, Math.PI * 2);
+        context.fillStyle = '#009688';
+        context.fill();
+        context.strokeStyle = '#004d40';
+        context.lineWidth = 3;
+        context.stroke();
+
+        // Draw a rectangle
+        context.fillStyle = '#c8e6c9';
+        context.fillRect(width / 2 - 50, height / 2 - 80, 100, 60);
+        context.strokeStyle = '#004d40';
+        context.lineWidth = 2;
+        context.strokeRect(width / 2 - 50, height / 2 - 80, 100, 60);
+
+        const imageContainer = document.getElementById('image-container');
+        imageContainer.innerHTML = '';
+        const img = new Image();
+        img.src = canvas.toDataURL('image/png');
+        imageContainer.appendChild(img);
+    }
+</script>
+
+</body>
+</html>
